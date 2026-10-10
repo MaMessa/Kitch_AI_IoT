@@ -1,0 +1,200 @@
+---
+id: 8845a8e7-4e09-4ff8-9509-feb9d3d4378c
+title: KitchAI
+config:
+  layout: elk
+  theme: base
+  themeVariables:
+    primaryColor: "#d6d922"
+    primaryTextColor: "#000000"
+    lineColor: "#000000"
+    background: "#f0f0f0"
+---
+
+erDiagram
+
+
+    %% ------------------------------------------------
+    %% ENTITÉS
+    %% ------------------------------------------------
+
+    User { 
+        INT user_id PK
+    }
+
+    Household {
+        INT household_id PK
+    }
+
+    Household_Member {
+        INT household_Member_id PK
+        INT household_id FK
+        INT user_id FK
+    }
+
+    Role {
+        INT role_id PK
+    }
+
+    Recipe_Contributor {
+        INT recipe_contributor_id PK
+        INT recipe_id FK
+        INT user_id FK
+        INT role_id FK
+    }
+
+    Recipe {
+        INT recipe_id PK   
+        INT user_id FK
+        INT category_id FK    
+    }
+
+    Category {
+        INT category_id PK
+    }
+
+    Recipe_Item {
+        INT recipe_item_id PK
+        INT recipe_id FK
+        INT ingredient_id FK
+    }
+
+    Recipe_Diet {
+        INT recipe_diet_id PK
+        INT recipe_id FK
+        INT diet_id FK
+    }
+
+    Diet {
+        INT diet_id PK
+    }
+
+    Meal_Plan {
+        INT meal_plan_id PK
+        INT household_id FK
+    }
+
+    Meal_Plan_Item {
+        INT meal_plan_item_id PK
+        INT meal_plan_id FK
+        INT recipe_id FK
+    }
+
+    Grocery_List {
+        INT shopping_list_id PK
+        INT household_id FK
+    }
+
+    Grocery_List_Items {
+        INT shopping_list_items_id PK
+        INT item_id FK
+        INT shopping_list_id FK
+    }
+
+    Item {
+        INT item_id PK  
+        INT stock_id FK
+    }
+
+    Unit {
+        INT unit_id PK
+    }
+
+    Ingredient {
+        INT ingredient_id PK
+        INT item_id FK
+        INT ingredient_category FK
+    }
+
+    Ingredient_Category {
+        INT ingredient_category_id PK
+    }
+
+    Non_Food_Item {
+        INT non_food_item_id PK
+        INT Item_id FK
+    }
+
+    Non_Food_Item_Category {
+        INT non_food_item_category_id PK
+    }
+
+    Stock {
+        INT stock_id            PK
+        INT household_id            FK
+    }
+
+    Scan_Log {
+        INT Scan_log_id PK
+        INT user_id FK
+        INT household_id FK
+    }
+
+    Scan_detection {
+        INT scan_id PK
+        INT item_id FK
+        INT Scan_log_id FK
+    }
+
+%% ------------------------------------------------
+%% RELATIONS 
+%% ------------------------------------------------
+
+    %% Utilisateurs & Foyers = OK
+    User ||--|{ Household_Member : "fait partie de" 
+    
+    Household ||--|{ Household_Member : "contient"  
+
+    %% Recettes & Contributions = OK
+    User ||--o{ Recipe : "crée"                                 
+    User ||--o{ Recipe_Contributor : "peut être / contribue"    
+    Role ||--o{ Recipe_Contributor : "définit le rôle de"       
+    Recipe ||--o{ Recipe_Contributor : "a pour contributeurs"   
+    %% Catégory (N-N) = OK
+    Category ||--o{ Recipe_Category : "classifie"               
+    Recipe ||--o{ Recipe_Category : "classifie"                 
+
+    %% Ingrédients & Régimes = OK
+    %% (N-N) 
+    Recipe ||--o{ Recipe_Item : "contient"                      
+    Ingredient ||--o{ Recipe_Item : "est utilisé dans"          
+    Ingredient_Category ||--o{ Ingredient : "catégorise"        
+    Recipe ||--o{ Recipe_Diet : "respecte"                      
+    Diet ||--o{ Recipe_Diet : "qualifie"                        
+
+    %% Planning &  = OK
+    Household ||--o{ Meal_Plan : "partage"                      
+    Meal_Plan ||--o{ Meal_Plan_Item : "planifie"                
+    Recipe ||--o{ Meal_Plan_Item : "est programmée dans"        
+
+    %% Stock (N-N) = OK
+    Household ||--o{ Grocery_List : "partage"                   
+    Grocery_List ||--o{ Grocery_List_Items : "contient"         
+    Item |o--o{ Grocery_List_Items : "figure dans"              
+    Household||--||Stock : "posséde"                            
+
+    Stock||--o{ Stock_Item :""                                  
+    Item||--o{ Stock_Item : ""                                  
+
+    %% Catalogue Produits & Unités = OK
+    Item ||--o| Ingredient : "est un aliment"                   
+    Item ||--o| Non_Food_Item : "est un non-aliment"            
+    Non_Food_Item_Category ||--o{ Non_Food_Item : "catégorise"  
+    Ingredient_Category||--o{Ingredient: "catégorise"           
+
+    %% LIAISONS UNITÉS = OK
+    Unit ||--o{ Item : "définit l'unité par défaut de"
+    Unit ||--o{ Recipe_Item : "mesure la quantité dans"
+    Unit ||--o{ Stock_Item : "mesure la quantité en"
+    Unit ||--o{ Grocery_List_Items : "mesure la quantité à acheter pour"
+    
+    %%Ustensil (N-N) = OK
+    Utensil||--o{ Recipe_Utensil :"est utilisé" 
+    Recipe||--o{ Recipe_Utensil :"utilise"      
+
+    %% Vision & YOLO (Flux simplifié) = ok
+    User ||--o{ Scan_Log : "effectue"
+    Household ||--o{ Scan_Log : "enregistre"
+    Scan_Log ||--o{ Scan_detection : "contient"
+    Item |o--o{ Scan_detection : "est identifié dans"
+
