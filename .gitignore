@@ -1,2 +1,8 @@
 Avancement_Projet.md
 Note.md
+.env
+.venv/
+__pycache__/
+
+# Ignore local database files and all subdirectories
+/Project_note/

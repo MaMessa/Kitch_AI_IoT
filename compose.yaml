@@ -1,0 +1,31 @@
+
+services:
+  db:                              # Service name used by Docker Compose
+    image: postgres:17             # Use PostgreSQL version 17
+    container_name: kitchai-db     # Assign a fixed name to the container
+
+    # Initialize PostgreSQL with a development user and database
+    environment:
+      POSTGRES_USER: kitchai        # Initial PostgreSQL username
+      POSTGRES_PASSWORD: dev_password  # Development password only
+      POSTGRES_DB: kitchai          # Database created on first initialization
+
+    # Expose PostgreSQL only on the host machine (localhost)
+    ports:
+      - "127.0.0.1:5433:5432"     # HOST_IP:HOST_PORT:CONTAINER_PORT
+
+    # Persist database files outside the container's writable layer
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    # Check whether PostgreSQL is ready to accept connections
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kitchai -d kitchai"]
+      interval: 5s                 # Run the check every 5 seconds
+      timeout: 5s                  # Maximum duration of each check
+      retries: 5                   # Mark unhealthy after 5 consecutive failures
+
+# Declare the named volume managed by Docker
+volumes:
+  postgres_data:
+
