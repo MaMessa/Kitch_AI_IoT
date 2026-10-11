@@ -1,0 +1,123 @@
+---
+title: KitchAI
+config:
+  layout: elk
+  theme: base
+  themeVariables:
+    primaryColor: "#d6d922"
+    primaryTextColor: "#000000"
+    lineColor: "#000000"
+    background: "#f0f0f0"
+---
+erDiagram
+
+
+    User {
+    }
+    Household {
+    }
+    Household_Member {
+    }
+    Role {
+    }
+    Recipe_Contributor {
+    }
+    Recipe {
+    }
+    Recipe_Category {
+    }
+    Category {
+    }
+    Recipe_Item {
+    }
+    Recipe_Diet {
+    }
+    Diet {
+    }
+    Meal_Plan {
+    }
+    Meal_Plan_Item {
+    }
+    Grocery_List {
+    }
+    Grocery_List_Items {
+    }
+    Item {
+    }
+    Unit {
+    }
+    Unit_Conversion {
+    }
+    Ingredient {
+    }
+    Ingredient_Category {
+    }
+    Non_Food_Item {
+    }
+    Non_Food_Item_Category {
+    }
+    Stock {
+    }
+    Stock_Item {
+    }
+    Yolo_Class {
+    }
+    Scan_detection {
+    }
+    Scan_Log {
+    }
+    Utensil {
+    }
+    Recipe_Utensil {
+    }
+
+    User ||--|{ Household_Member : "fait partie de" 
+    Household ||--|{ Household_Member : "contient"  
+
+    User ||--o{ Recipe : "crée"                                           
+    User ||--o{ Recipe_Contributor : "peut être / contribue"    
+    Role ||--o{ Recipe_Contributor : "définit le rôle de"      
+    Recipe ||--o{ Recipe_Contributor : "a pour contributeurs"   
+
+    Category ||--o{ Recipe_Category : "classifie"               
+    Recipe ||--o{ Recipe_Category : "classifie"                 
+
+    Recipe ||--o{ Recipe_Item : "contient"                      
+    Ingredient ||--o{ Recipe_Item : "est utilisé dans"          
+    Ingredient_Category ||--o{ Ingredient : "catégorise"        
+    Recipe ||--o{ Recipe_Diet : "respecte"                      
+    Diet ||--o{ Recipe_Diet : "qualifie"                        
+
+    Household ||--o{ Meal_Plan : "partage"                      
+    Meal_Plan ||--o{ Meal_Plan_Item : "planifie"                
+    Recipe |o--o{ Meal_Plan_Item : "est programmée dans"        
+
+    Household ||--o{ Grocery_List : "partage"                   
+    Grocery_List ||--o{ Grocery_List_Items : "contient"         
+    Item |o--o{ Grocery_List_Items : "figure dans"              
+    Household ||--|{ Stock : "posséde"                          
+
+    Stock ||--o{ Stock_Item : ""                                
+    Item ||--o{ Stock_Item : ""                                 
+
+    Item ||--o| Ingredient : "est un aliment"                   
+    Item ||--o| Non_Food_Item : "est un non-aliment"            
+    Non_Food_Item_Category ||--o{ Non_Food_Item : "catégorise"  
+
+    Unit ||--o{ Item : "définit l'unité par défaut de"
+    Unit ||--o{ Recipe_Item : "mesure la quantité dans"
+    Unit ||--o{ Stock_Item : "mesure la quantité en"
+    Unit ||--o{ Grocery_List_Items : "mesure la quantité à acheter pour"
+    
+    Utensil ||--o{ Recipe_Utensil : "est utilisé" 
+    Recipe ||--o{ Recipe_Utensil : "utilise"     
+    
+    Unit ||--o{ Unit_Conversion : "unité source (from)"
+    Unit ||--o{ Unit_Conversion : "unité cible (to)"
+    Item |o--o{ Unit_Conversion : "spécifie la densité/conversion pour"
+
+    User ||--o{ Scan_Log : "effectue"
+    Household ||--o{ Scan_Log : "enregistre"
+    Scan_Log ||--o{ Scan_detection : "contient"
+    Yolo_Class ||--o{ Scan_detection : "identifie la classe de"
+    Item |o--o{ Scan_detection : "est identifié dans"
