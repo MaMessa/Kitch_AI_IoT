@@ -44,14 +44,16 @@ erDiagram
     }
 
     Role {
-        INT role_id PK
+        INT id PK
+        VARCHAR name "UNIQUE, NOT NULL - Ex: 'admin', 'member'"
+        VARCHAR description "NULLable"
     }
 
     Recipe_Contributor {
-        INT recipe_contributor_id PK
-        INT recipe_id FK
-        INT user_id FK
-        INT role_id FK
+        BIGINT id PK
+        BIGINT recipe_id FK "NOT NULL"
+        BIGINT user_id FK "NOT NULL"
+        BIGINT role_id FK "NOT NULL"
     }
 
 
@@ -111,10 +113,10 @@ erDiagram
         BIGINT utensil_id FK "NOT NULL"
     }
 
-    Recipe_Item {
+    Recipe_Ingredient {
         BIGINT id PK
         BIGINT recipe_id FK "NOT NULL"
-        BIGINT item_id FK "NOT NULL"
+        BIGINT ingredient_id FK "NOT NULL"
         BIGINT unit_id FK "NOT NULL"
         NUMERIC quantity "NOT NULL"
         VARCHAR notes "Ex: 'coupé en dés'"
@@ -296,8 +298,8 @@ erDiagram
     Recipe ||--o{ Recipe_Utensil : "utilise"     
     Utensil ||--o{ Recipe_Utensil : "est utilisé" 
 
-    Recipe ||--o{ Recipe_Item : "contient"                      
-    Ingredient ||--o{ Recipe_Item : "est utilisé dans"          
+    Recipe ||--o{ Recipe_Ingredient : "contient"                      
+    Ingredient ||--o{ Recipe_Ingredient : "est utilisé dans"          
 
     %% 4. Catalogue Produits & Héritage
     Item ||--o| Ingredient : "est un aliment"                   
@@ -321,7 +323,7 @@ erDiagram
 
     %% 7. Unités & Conversions
     Unit ||--o{ Item : "définit l'unité par défaut de"
-    Unit ||--o{ Recipe_Item : "mesure la quantité dans"
+    Unit ||--o{ Recipe_Ingredient : "mesure la quantité dans"
     Unit ||--o{ Stock_Item : "mesure la quantité en"
     Unit ||--o{ Grocery_List_Items : "mesure la quantité à acheter pour"
     
