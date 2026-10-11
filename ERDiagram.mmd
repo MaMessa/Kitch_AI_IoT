@@ -1,0 +1,337 @@
+---
+id: 8845a8e7-4e09-4ff8-9509-feb9d3d4378c
+title: KitchAI
+config:
+  layout: elk
+  theme: base
+  themeVariables:
+    primaryColor: "#d6d922"
+    primaryTextColor: "#000000"
+    lineColor: "#000000"
+    background: "#f0f0f0"
+---
+
+erDiagram
+
+    %% ================================================
+    %% 1. UTILISATEURS, FOYERS & RÔLES
+    %% ================================================
+
+    User { 
+        BIGINT id PK
+        VARCHAR email "UNIQUE, NOT NULL"
+        VARCHAR password_hash "NOT NULL"
+        VARCHAR first_name "NOT NULL"
+        VARCHAR last_name
+        TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
+        TIMESTAMP updated_at
+    }
+
+    Household {
+        BIGINT id PK
+        VARCHAR name "NOT NULL"
+        VARCHAR invite_code "UNIQUE, NOT NULL"
+        TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
+        TIMESTAMP updated_at
+    }
+
+    Household_Member {
+        BIGINT id PK
+        BIGINT user_id FK "NOT NULL"
+        BIGINT household_id FK "NOT NULL"
+        VARCHAR role "DEFAULT 'member'"
+        TIMESTAMP joined_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+
+    Role {
+        INT role_id PK
+    }
+
+    Recipe_Contributor {
+        INT recipe_contributor_id PK
+        INT recipe_id FK
+        INT user_id FK
+        INT role_id FK
+    }
+
+
+    %% ================================================
+    %% 2. RECETTES & ASSOCIATIONS (Catégories, Régimes, Ustensiles)
+    %% ================================================
+
+    Recipe {
+        BIGINT id PK
+        BIGINT author_id FK "NOT NULL (User)"
+        BIGINT household_id FK "NULLable (NULL = publique)"
+        VARCHAR title "NOT NULL"
+        TEXT description
+        INTEGER prep_time_min
+        INTEGER cook_time_min
+        INTEGER servings "DEFAULT 4"
+        TEXT instructions "NOT NULL"
+        VARCHAR image_url
+        BOOLEAN is_public "DEFAULT TRUE"
+        TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
+        TIMESTAMP updated_at  
+    }
+
+    Category {
+        BIGINT id PK
+        VARCHAR name "UNIQUE, NOT NULL - Ex: Entrée, Plat, Dessert"
+        VARCHAR icon_slug
+    }
+
+    Recipe_Category {
+        BIGINT id PK
+        BIGINT recipe_id FK "NOT NULL"
+        BIGINT category_id FK "NOT NULL"
+    }
+
+    Diet {
+        BIGINT id PK
+        VARCHAR name "UNIQUE, NOT NULL - Ex: Végétarien, Minceur, Sans Gluten"
+        VARCHAR description
+    }
+
+    Recipe_Diet {
+        BIGINT id PK
+        BIGINT recipe_id FK "NOT NULL"
+        BIGINT diet_id FK "NOT NULL"
+    }
+
+    Utensil {
+        BIGINT id PK
+        VARCHAR name "UNIQUE, NOT NULL - Ex: Fouet, Moule à cake"
+        VARCHAR icon_slug
+    }
+
+    Recipe_Utensil {
+        BIGINT id PK
+        BIGINT recipe_id FK "NOT NULL"
+        BIGINT utensil_id FK "NOT NULL"
+    }
+
+    Recipe_Item {
+        BIGINT id PK
+        BIGINT recipe_id FK "NOT NULL"
+        BIGINT item_id FK "NOT NULL"
+        BIGINT unit_id FK "NOT NULL"
+        NUMERIC quantity "NOT NULL"
+        VARCHAR notes "Ex: 'coupé en dés'"
+    }
+
+
+    %% ================================================
+    %% 3. CATALOGUE PRODUITS, HÉRITAGE & UNITÉS
+    %% ================================================
+
+    Item {
+        BIGINT id PK
+        VARCHAR name "NOT NULL"
+        VARCHAR image_url
+        BIGINT default_unit_id FK "NOT NULL"
+        TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
+        TIMESTAMP updated_at
+    }
+
+    Ingredient {
+        BIGINT item_id PK, FK "Héritage 1-1 (1 Item = 1 Ingredient)"
+        BIGINT ingredient_category_id FK "NOT NULL"
+        NUMERIC calories "Par 100g/ml"
+        NUMERIC proteins "Par 100g/ml"
+        NUMERIC carbs "Par 100g/ml"
+        NUMERIC fats "Par 100g/ml"
+        NUMERIC fiber "Par 100g/ml"
+    }
+
+    Ingredient_Category {
+        BIGINT id PK
+        VARCHAR name "UNIQUE, NOT NULL - Ex: Légumes, Produits laitiers"
+        VARCHAR icon_slug
+    }
+
+    Non_Food_Item {
+        BIGINT item_id PK, FK "Héritage 1-1 (1 Item = 1 Non_Food_Item)"
+        BIGINT non_food_item_category_id FK "NOT NULL"
+        VARCHAR usage_notes
+    }
+
+    Non_Food_Item_Category {
+        BIGINT id PK
+        VARCHAR name "UNIQUE, NOT NULL - Ex: Entretien, Hygiène"
+        VARCHAR icon_slug
+    }
+
+    Unit {
+        BIGINT id PK
+        VARCHAR name "UNIQUE, NOT NULL - Ex: Gramme, Litre, Pièce"
+        VARCHAR symbol "UNIQUE, NOT NULL - Ex: g, l, pcs"
+        VARCHAR unit_type "Ex: mass, volume, count"
+    }
+
+    Unit_Conversion {
+        BIGINT id PK
+        BIGINT from_unit_id FK "NOT NULL"
+        BIGINT to_unit_id FK "NOT NULL"
+        BIGINT item_id FK "NULLable (NULL = conversion générique)"
+        NUMERIC factor "NOT NULL - Ex: 15.0000"
+        TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+
+
+    %% ================================================
+    %% 4. PLANNING, LISTE DE COURSES & STOCK
+    %% ================================================
+
+    Meal_Plan {
+        BIGINT id PK
+        BIGINT household_id FK "NOT NULL"
+        DATE start_date "NOT NULL"
+        DATE end_date "NOT NULL"
+        TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+
+    Meal_Plan_Item {
+        BIGINT id PK
+        BIGINT meal_plan_id FK "NOT NULL"
+        BIGINT recipe_id FK "NULLable"
+        BIGINT item_id FK "NULLable"
+        BIGINT unit_id FK "NULLable"
+        NUMERIC quantity "NULLable"
+        DATE meal_date "NOT NULL"
+        VARCHAR meal_type "NOT NULL"
+        INTEGER servings "DEFAULT 1"
+    }
+
+    Grocery_List {
+        BIGINT id PK
+        BIGINT household_id FK "NOT NULL"
+        VARCHAR name "NOT NULL DEFAULT 'Liste principale'"
+        BOOLEAN is_archived "DEFAULT FALSE"
+        TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
+        TIMESTAMP updated_at
+    }
+
+    Grocery_List_Items {
+        BIGINT id PK
+        BIGINT grocery_list_id FK "NOT NULL"
+        BIGINT item_id FK "NOT NULL"
+        BIGINT unit_id FK "NOT NULL"
+        NUMERIC quantity "NOT NULL DEFAULT 1"
+        BOOLEAN is_bought "DEFAULT FALSE"
+        BIGINT added_by_user_id FK "NULLable"
+        TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+
+    Stock {
+        BIGINT id PK
+        BIGINT household_id FK "NOT NULL"
+        VARCHAR name "DEFAULT 'Stock principal'"
+        TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
+        TIMESTAMP updated_at
+    }
+
+    Stock_Item {
+        BIGINT id PK
+        BIGINT stock_id FK "NOT NULL"
+        BIGINT item_id FK "NOT NULL"
+        BIGINT unit_id FK "NOT NULL"
+        NUMERIC quantity "NOT NULL DEFAULT 0"
+        DATE expiration_date "NULLable"
+        TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
+        TIMESTAMP updated_at
+    }
+
+
+    %% ================================================
+    %% 5. VISION & YOLO
+    %% ================================================
+
+    Yolo_Class {
+        BIGINT id PK
+        VARCHAR name "UNIQUE, NOT NULL - Ex: 'apple', 'bottle'"
+        VARCHAR label_fr "Ex: 'Pomme', 'Bouteille'"
+    }
+
+    Scan_Log {
+        BIGINT id PK
+        BIGINT user_id FK "NOT NULL"
+        BIGINT household_id FK "NOT NULL"
+        VARCHAR image_url
+        TIMESTAMP scanned_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+
+    Scan_detection {
+        BIGINT id PK
+        BIGINT scan_log_id FK "NOT NULL"
+        BIGINT yolo_class_id FK "NOT NULL"
+        BIGINT item_id FK "NULLable (après validation/matching)"
+        NUMERIC confidence "Ex: 0.950"
+        VARCHAR bounding_box "Ex: '[x, y, w, h]'"
+        TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+
+
+    %% ================================================
+    %% RELATIONS (Ordonnées pour la lisibilité)
+    %% ================================================
+
+    %% 1. Utilisateurs & Foyers
+    User ||--|{ Household_Member : "fait partie de" 
+    Household ||--|{ Household_Member : "contient"  
+
+    %% 2. Contributions & Rôles
+    User ||--o{ Recipe : "crée"                                 
+    User ||--o{ Recipe_Contributor : "peut être / contribue"    
+    Role ||--o{ Recipe_Contributor : "définit le rôle de"       
+    Recipe ||--o{ Recipe_Contributor : "a pour contributeurs"   
+
+    %% 3. Recettes & Intermédiaires (Placées entre Recipe et les tables cibles)
+    Recipe ||--o{ Recipe_Category : "classifie"                 
+    Category ||--o{ Recipe_Category : "classifie"               
+
+    Recipe ||--o{ Recipe_Diet : "respecte"                      
+    Diet ||--o{ Recipe_Diet : "qualifie"                        
+
+    Recipe ||--o{ Recipe_Utensil : "utilise"     
+    Utensil ||--o{ Recipe_Utensil : "est utilisé" 
+
+    Recipe ||--o{ Recipe_Item : "contient"                      
+    Ingredient ||--o{ Recipe_Item : "est utilisé dans"          
+
+    %% 4. Catalogue Produits & Héritage
+    Item ||--o| Ingredient : "est un aliment"                   
+    Ingredient_Category ||--o{ Ingredient : "catégorise"        
+    Item ||--o| Non_Food_Item : "est un non-aliment"            
+    Non_Food_Item_Category ||--o{ Non_Food_Item : "catégorise"          
+
+    %% 5. Planning
+    Household ||--o{ Meal_Plan : "partage"                      
+    Meal_Plan ||--o{ Meal_Plan_Item : "planifie"                
+    Recipe |o--o{ Meal_Plan_Item : "est programmée dans"        
+
+    %% 6. Stock & Courses
+    Household ||--o{ Grocery_List : "partage"                   
+    Grocery_List ||--o{ Grocery_List_Items : "contient"         
+    Item |o--o{ Grocery_List_Items : "figure dans"              
+
+    Household ||--|{ Stock : "posséde"                            
+    Stock ||--o{ Stock_Item : ""                                  
+    Item ||--o{ Stock_Item : ""                                  
+
+    %% 7. Unités & Conversions
+    Unit ||--o{ Item : "définit l'unité par défaut de"
+    Unit ||--o{ Recipe_Item : "mesure la quantité dans"
+    Unit ||--o{ Stock_Item : "mesure la quantité en"
+    Unit ||--o{ Grocery_List_Items : "mesure la quantité à acheter pour"
+    
+    Unit ||--o{ Unit_Conversion : "unité source (from)"
+    Unit ||--o{ Unit_Conversion : "unité cible (to)"
+    Item |o--o{ Unit_Conversion : "spécifie la densité/conversion pour"
+
+    %% 8. Vision & YOLO
+    User ||--o{ Scan_Log : "effectue"
+    Household ||--o{ Scan_Log : "enregistre"
+    Scan_Log ||--o{ Scan_detection : "contient"
+    Yolo_Class ||--o{ Scan_detection : "identifie la classe de"
+    Item |o--o{ Scan_detection : "est identifié dans"
