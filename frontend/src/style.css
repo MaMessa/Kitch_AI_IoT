@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap'); /* Loads the selected geometric headings and readable interface type. */
+:root { --bg: #151a24; /* Sets the deep matte canvas. */
+  --panel: #202938; /* Defines raised surfaces. */
+  --panel-soft: #2b3545; /* Defines subtle secondary surfaces. */
+  --line: #3b4658; /* Sets crisp structural borders. */
+  --text: #f4f2eb; /* Sets high-contrast primary text. */
+  --muted: #a7afa8; /* Sets readable secondary text. */
+  --lime: #c7fa4b; /* Adds the electric green accent. */
+  --mango: #ff9e48; /* Adds the mango accent. */
+  --sun: #ffe15a; /* Adds the sunny yellow accent. */
+  --coral: #ff6d72; /* Adds the coral accent. */
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif; /* Uses an accessible interface font. */
+  color: var(--text); /* Applies the main text color. */
+  background: var(--bg); /* Applies the matte background. */
+} /* Ends the global token block. */
+* { box-sizing: border-box; } /* Keeps sizes predictable. */
+body { margin: 0; min-width: 320px; background: var(--bg); } /* Removes browser margins. */
+button, input { font: inherit; } /* Keeps form controls consistent. */
+button { color: inherit; cursor: pointer; } /* Makes interactive controls clear. */
+.app-shell { min-height: 100vh; } /* Fills the viewport. */
+.sidebar { width: 238px; position: fixed; inset: 0 auto 0 0; padding: 27px 18px; border-right: 1px solid var(--line); background: #1b2230; display: flex; flex-direction: column; z-index: 3; } /* Anchors desktop navigation. */
+.brand { display: flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; font-size: 21px; font-weight: 850; letter-spacing: -1px; } /* Styles the wordmark. */
+.brand-mark { width: 33px; height: 33px; display: grid; place-items: center; background: var(--lime); color: #20251c; font-size: 20px; font-weight: 900; } /* Creates the geometric brand tile. */
+.brand-ai { color: var(--lime); } /* Highlights the AI suffix. */
+.side-label, .eyebrow { color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: 1.7px; } /* Styles section labels. */
+.side-label { margin: 55px 10px 13px; } /* Separates the sidebar groups. */
+.nav-item { min-height: 44px; display: flex; align-items: center; gap: 12px; padding: 0 12px; border: 1px solid transparent; background: transparent; color: var(--muted); text-align: left; font-size: 13px; } /* Creates compact navigation rows. */
+.nav-item.active { border-color: #566540; background: #2a3424; color: var(--lime); } /* Marks the selected destination. */
+.sidebar-bottom { margin-top: auto; } /* Pins profile controls to the bottom. */
+.profile { display: flex; align-items: center; gap: 10px; padding: 15px 4px 0; border-top: 1px solid var(--line); font-size: 12px; } /* Styles the demo profile. */
+.profile small { display: block; margin-top: 3px; color: var(--muted); } /* Subdues the profile caption. */
+.profile svg { margin-left: auto; color: var(--muted); } /* Aligns the profile action. */
+.avatar { width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--line); background: var(--panel-soft); font-weight: 800; } /* Creates a simple initial avatar. */
+.main-content { max-width: 1500px; margin-left: 238px; padding: 0 54px; } /* Centers content beside the sidebar. */
+.topbar { height: 64px; display: flex; justify-content: flex-end; align-items: center; border-bottom: 1px solid #303b4b; } /* Creates the quiet utility bar. */
+.top-note { color: var(--muted); font-size: 9px; font-weight: 800; letter-spacing: 2px; } /* Adds a subtle brand statement. */
+.mobile-brand, .mobile-avatar, .mobile-nav { display: none; } /* Hides mobile controls on desktop. */
+.hero { min-height: 355px; display: flex; justify-content: space-between; align-items: center; position: relative; overflow: hidden; border-bottom: 1px solid var(--line); } /* Sets the asymmetrical hero region. */
+.hero-copy { position: relative; z-index: 1; padding: 28px 0 35px; } /* Keeps hero text above artwork. */
+.eyebrow { margin: 0 0 17px; } /* Spaces small overlines. */
+.eyebrow-dot { width: 7px; height: 7px; display: inline-block; margin-right: 7px; background: var(--coral); } /* Adds a small color marker. */
+h1, h2, h3, p { margin-top: 0; } /* Normalizes heading spacing. */
+h1 { margin-bottom: 15px; font-family: 'Poppins', 'Arial', sans-serif; font-size: clamp(42px, 5vw, 66px); line-height: .98; letter-spacing: -3px; } /* Establishes the geometric display style. */
+h1 em { color: var(--lime); font-style: normal; } /* Highlights the headline phrase. */
+.hero-subtitle { color: var(--muted); font-size: 14px; line-height: 1.7; } /* Keeps supporting text calm. */
+.hero-search { width: min(420px, 80vw); height: 48px; display: flex; align-items: center; gap: 11px; margin-top: 24px; padding: 0 13px; border: 1px solid #687168; background: #202522; color: var(--lime); } /* Creates a high-contrast search field. */
+.hero-search input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--text); font-size: 12px; } /* Styles recipe search input. */
+.hero-search input::placeholder { color: #89938a; } /* Softens placeholder text. */
+kbd { padding: 4px 6px; border: 1px solid var(--line); color: var(--muted); font-size: 9px; } /* Shows a decorative shortcut hint. */
+.hero-art { width: 340px; height: 290px; position: absolute; right: 0; top: 27px; } /* Positions the flat food artwork. */
+.art-orbit { position: absolute; border: 1px solid #52617a; border-radius: 50%; transform: rotate(-24deg); } /* Draws clean orbital accents. */
+.orbit-one { width: 285px; height: 205px; right: 0; top: 40px; } /* Sets the outer orbit. */
+.orbit-two { width: 220px; height: 260px; right: 48px; top: 14px; border-color: #604941; transform: rotate(32deg); } /* Sets the inner orbit. */
+.art-plate { width: 170px; height: 170px; position: absolute; top: 55px; right: 53px; display: flex; justify-content: center; align-items: center; gap: 9px; border: 7px solid #d9d6c7; border-radius: 50%; background: #3d5440; box-shadow: 0 0 0 12px #283347; font-size: 35px; transform: rotate(-9deg); } /* Builds a playful flat illustration plate. */
+.art-note { position: absolute; right: 0; bottom: 25px; padding: 9px 11px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-size: 9px; font-weight: 800; letter-spacing: 1px; transform: rotate(3deg); } /* Adds a paper-like food label. */
+.art-note span { margin-left: 8px; color: var(--mango); } /* Colors the label marker. */
+.art-spark { position: absolute; color: var(--sun); font-size: 27px; } /* Styles decorative flat sparks. */
+.spark-one { top: 27px; right: 75px; } /* Places the upper spark. */
+.spark-two { left: 20px; bottom: 55px; color: var(--coral); } /* Places the lower spark. */
+.collection-head { display: flex; justify-content: space-between; align-items: end; margin-top: 32px; } /* Aligns title and filters. */
+.collection-head .eyebrow { margin-bottom: 7px; } /* Tightens collection eyebrow spacing. */
+h2 { margin-bottom: 0; font-family: 'Poppins', 'Arial', sans-serif; font-size: 28px; letter-spacing: -.7px; } /* Styles section headings. */
+.recipe-count { color: var(--lime); font-family: Inter, sans-serif; font-size: 12px; vertical-align: top; } /* Accents the dynamic result count. */
+.filter-button { height: 36px; display: flex; align-items: center; gap: 8px; padding: 0 11px; border: 1px solid var(--line); background: transparent; font-size: 11px; } /* Creates a compact filter control. */
+.filter-dot { width: 6px; height: 6px; background: var(--coral); } /* Shows active filter affordance. */
+.chips { display: flex; gap: 8px; overflow-x: auto; padding: 18px 0 20px; } /* Keeps category filters scrollable. */
+.chip { min-height: 31px; padding: 0 12px; border: 1px solid var(--line); background: transparent; color: var(--muted); white-space: nowrap; font-size: 10px; } /* Defines unselected category chips. */
+.chip.selected { border-color: var(--lime); background: var(--lime); color: #1d231b; font-weight: 800; } /* Highlights the active category. */
+.notice { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding: 12px 14px; border: 1px solid #6b7b51; background: #273022; color: var(--lime); font-size: 12px; } /* Announces prototype navigation feedback. */
+.notice button { border: 0; background: transparent; color: inherit; } /* Styles notice dismissal. */
+.recipe-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; align-items: start; } /* Creates the variable-height recipe mosaic. */
+.recipe-card { padding: 0; overflow: hidden; border: 1px solid var(--line); background: var(--panel); text-align: left; transition: border-color .15s, transform .15s; } /* Styles clickable recipe tiles. */
+.recipe-card:hover { border-color: var(--lime); transform: translateY(-3px); } /* Adds a restrained hover response. */
+.card-image { min-height: 182px; position: relative; background-color: #394339; background-position: center; background-size: cover; } /* Displays the recipe cover image. */
+.card-1 .card-image, .card-4 .card-image { min-height: 230px; } /* Varies card heights for the mosaic rhythm. */
+.card-2 .card-image { min-height: 155px; } /* Adds another tile height variation. */
+.card-category { position: absolute; top: 11px; left: 11px; padding: 6px 8px; background: var(--bg); color: var(--lime); font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; } /* Labels recipe category. */
+.card-open { width: 29px; height: 29px; position: absolute; right: 10px; bottom: 10px; display: grid; place-items: center; background: var(--lime); color: #1e241c; } /* Adds a clear card action. */
+.card-copy { padding: 13px 14px 12px; } /* Gives text room to breathe. */
+h3 { margin-bottom: 5px; font-family: 'Poppins', 'Arial', sans-serif; font-size: 15px; } /* Styles recipe titles. */
+.card-copy p { min-height: 30px; margin-bottom: 11px; color: var(--muted); font-size: 10px; line-height: 1.5; } /* Styles recipe summaries. */
+.card-meta { display: flex; align-items: center; gap: 13px; color: var(--muted); font-size: 9px; } /* Aligns recipe metadata. */
+.card-meta span { display: flex; align-items: center; gap: 5px; } /* Groups metadata icons and values. */
+.card-meta svg { color: var(--mango); } /* Accents metadata icons. */
+.card-meta .card-leaf { margin-left: auto; color: var(--lime); } /* Aligns the dietary marker. */
+.footer { padding: 35px 0 25px; color: #68736b; font-size: 9px; font-weight: 800; letter-spacing: 2px; text-align: center; } /* Finishes the page quietly. */
+.footer span { padding: 0 5px; color: var(--coral); } /* Colors the footer ornament. */
+.modal-backdrop { position: fixed; inset: 0; display: grid; place-items: center; padding: 20px; background: #090b09dd; z-index: 5; } /* Covers the page behind details. */
+.recipe-modal { width: min(780px, 100%); position: relative; display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); background: var(--panel); } /* Creates a responsive recipe detail panel. */
+.modal-close { position: absolute; top: 10px; right: 10px; z-index: 1; padding: 7px; border: 1px solid var(--line); background: var(--bg); } /* Provides a visible close control. */
+.modal-image { min-height: 390px; background-position: center; background-size: cover; } /* Displays the large recipe cover. */
+.modal-copy { padding: 38px 30px; } /* Spaces the recipe detail content. */
+.modal-copy h2 { margin-bottom: 12px; } /* Separates title and description. */
+.modal-copy p { color: var(--muted); font-size: 13px; line-height: 1.7; } /* Styles detail summary. */
+.modal-ingredients { display: grid; gap: 8px; margin: 30px 0; padding: 14px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 12px; } /* Reserves ingredient detail space. */
+.modal-ingredients span { color: var(--muted); line-height: 1.6; } /* Explains the API placeholder. */
+.primary-button { min-height: 43px; display: flex; justify-content: center; align-items: center; gap: 9px; width: 100%; border: 1px solid var(--lime); background: var(--lime); color: #20261c; font-weight: 800; font-size: 11px; } /* Styles the main action. */
+@media (max-width: 1050px) { .main-content { padding: 0 30px; } .hero-art { right: -60px; opacity: .75; } .recipe-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } } /* Adapts the layout for smaller desktops. */
+@media (max-width: 700px) { .sidebar { display: none; } .main-content { margin: 0; padding: 0 18px 82px; } .topbar { height: 56px; justify-content: space-between; } .mobile-brand { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 850; } .mobile-brand .brand-mark { width: 27px; height: 27px; font-size: 16px; } .mobile-avatar { display: grid; border: 1px solid var(--line); } .top-note { display: none; } .hero { min-height: 365px; align-items: start; } .hero-copy { padding-top: 38px; } h1 { font-size: 48px; } .hero-subtitle { font-size: 12px; } .hero-art { width: 180px; height: 170px; top: auto; right: -30px; bottom: -13px; opacity: .62; transform: scale(.67); transform-origin: bottom right; } .collection-head { margin-top: 24px; } h2 { font-size: 24px; } .recipe-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } .card-image, .card-1 .card-image, .card-4 .card-image, .card-2 .card-image { min-height: 160px; } .card-copy { padding: 11px 10px; } h3 { font-size: 13px; } .card-copy p { min-height: 44px; font-size: 9px; } .card-meta { gap: 8px; font-size: 8px; } .card-meta svg { width: 12px; } .mobile-nav { height: 63px; position: fixed; inset: auto 0 0; display: flex; justify-content: space-around; border-top: 1px solid var(--line); background: #1b2230f5; z-index: 4; } .mobile-nav button { display: grid; place-items: center; gap: 3px; border: 0; background: transparent; color: var(--muted); } .mobile-nav button.active { color: var(--lime); } .mobile-nav small { font-size: 8px; } .recipe-modal { max-height: 90vh; grid-template-columns: 1fr; overflow-y: auto; } .modal-image { min-height: 190px; } .modal-copy { padding: 24px 20px; } .modal-ingredients { margin: 18px 0; } } /* Reflows navigation and recipe cards for phones. */
+
+/* Gives every recipe tile a distinct, saturated accent when its photo is unavailable. */
+.card-image.lime { background-color: #c7fa4b; } /* Keeps the first tile electric green. */
+.card-image.coral { background-color: #ff6d72; } /* Gives the second tile a vivid coral base. */
+.card-image.mango { background-color: #ff9e48; } /* Gives breakfast a warm mango base. */
+.card-image.sun { background-color: #ffe15a; } /* Gives the soup tile a sunny yellow base. */
+.card-image.violet { background-color: #a78bfa; } /* Adds a strong violet accent to the tacos tile. */
+.card-image.pink { background-color: #ff8fc4; } /* Adds a bright pink accent to dessert. */
+
+/* Turns recipe details into colorful, solid panels while preserving the dark application canvas. */
+.recipe-card:nth-child(6n + 1) .card-copy { background: #c7fa4b; color: #192014; } /* Uses electric green for the first recipe. */
+.recipe-card:nth-child(6n + 2) .card-copy { background: #ff6d72; color: #241719; } /* Uses coral for the second recipe. */
+.recipe-card:nth-child(6n + 3) .card-copy { background: #ff9e48; color: #241b13; } /* Uses mango orange for the third recipe. */
+.recipe-card:nth-child(6n + 4) .card-copy { background: #ffe15a; color: #211e13; } /* Uses sunshine yellow for the fourth recipe. */
+.recipe-card:nth-child(6n + 5) .card-copy { background: #a78bfa; color: #1c1730; } /* Uses violet for the fifth recipe. */
+.recipe-card:nth-child(6n + 6) .card-copy { background: #ff8fc4; color: #28151f; } /* Uses pink for the sixth recipe. */
+.recipe-card .card-copy p { color: #30342d; } /* Keeps summaries readable on bright panels. */
+.recipe-card .card-meta { color: #30342d; } /* Keeps metadata readable on bright panels. */
+.recipe-card .card-meta svg { color: #20241e; } /* Gives metadata icons a strong dark contrast. */
+.recipe-card:hover { border-color: var(--text); } /* Makes the hover outline visible across all tile colors. */
+
+/* Gives each selected category a different joyful accent instead of repeating one color. */
+.chip:nth-child(2).selected { border-color: var(--coral); background: var(--coral); } /* Colors dinner coral. */
+.chip:nth-child(3).selected { border-color: var(--mango); background: var(--mango); } /* Colors lunch mango. */
+.chip:nth-child(4).selected { border-color: var(--sun); background: var(--sun); } /* Colors breakfast yellow. */
+.chip:nth-child(5).selected { border-color: #ff8fc4; background: #ff8fc4; } /* Colors dessert pink. */
+/* Binds the same accent to every recipe in the same category. */
+.recipe-card.theme-coral .card-copy { background: #ff6d72; color: #241719; } /* Uses coral for dinner recipes. */
+.recipe-card.theme-lime .card-copy { background: #c7fa4b; color: #192014; } /* Uses electric green for lunch recipes. */
+.recipe-card.theme-sun .card-copy { background: #ffe15a; color: #211e13; } /* Uses sunshine yellow for breakfast recipes. */
+.recipe-card.theme-pink .card-copy { background: #ff8fc4; color: #28151f; } /* Uses pink for dessert recipes. */
+.chip:nth-child(3).selected { border-color: var(--lime); background: var(--lime); } /* Matches the lunch filter to its recipe color. */
+/* Shows all recipe categories with solid color segments, never a gradient. */
+.card-tags { position: absolute; top: 11px; left: 11px; right: 42px; display: flex; flex-wrap: wrap; gap: 5px; } /* Groups category labels on each cover. */
+.category-tag { padding: 6px 8px; color: #171a18; font-size: 9px; font-weight: 850; letter-spacing: .4px; text-transform: uppercase; } /* Keeps category names readable. */
+.tag-coral { background: #ff6d72; } /* Marks dinner and starter categories. */
+.tag-lime { background: #c7fa4b; } /* Marks lunch and vegetarian categories. */
+.tag-sun { background: #ffe15a; } /* Marks breakfast and main-dish categories. */
+.tag-pink { background: #ff8fc4; } /* Marks dessert categories. */
+.tag-mango { background: #ff9e48; } /* Marks summer categories. */
+.card-category { display: none; } /* Replaces the former single-category badge. */
+.category-stripe { height: 6px; display: flex; } /* Creates one color segment per category. */
+.category-stripe span { flex: 1; } /* Gives every category an equal-width segment. */
+.stripe-coral { background: #ff6d72; } /* Adds the coral category segment. */
+.stripe-lime { background: #c7fa4b; } /* Adds the electric green category segment. */
+.stripe-sun { background: #ffe15a; } /* Adds the sunny yellow category segment. */
+.stripe-pink { background: #ff8fc4; } /* Adds the pink category segment. */
+.stripe-mango { background: #ff9e48; } /* Adds the mango category segment. */
+/* Gives each additional category its own color instead of reusing meal-category colors. */
+.tag-cyan, .stripe-cyan { background: #44d9c8; } /* Marks vegetarian recipes in turquoise. */
+.tag-violet, .stripe-violet { background: #b5a0ff; } /* Marks starters in violet. */
+.tag-blue, .stripe-blue { background: #67b7ff; } /* Marks main dishes in blue. */
+/* Softens interface edges slightly without using large pill-shaped corners. */
+.recipe-card, .hero-search, .filter-button, .chip, .nav-item.active, .card-open, .category-tag, .primary-button, .notice, .modal-close, .avatar, .brand-mark { border-radius: 5px; } /* Applies a restrained corner radius across key controls and cards. */

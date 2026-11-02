@@ -5,9 +5,18 @@ from sqlalchemy import pool
 
 from alembic import context
 
+
+# Importe l’URL chargée depuis .env et la Base qui contient les modèles.
+from app.database import DATABASE_URL  # Récupère l’URL de connexion du projet.
+from app.models import Base  # Accède aux métadonnées de tous les modèles.
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
+
+# Donne à Alembic l’URL réelle, sans stocker les identifiants dans alembic.ini.
+config.set_main_option("sqlalchemy.url", DATABASE_URL.replace("%", "%%"))  # Configure la connexion Alembic.
+
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -18,7 +27,9 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = None
+
+# Indique à Alembic où trouver la description des tables SQLAlchemy.
+target_metadata = Base.metadata  # Permet à Alembic de comparer modèles et base.
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

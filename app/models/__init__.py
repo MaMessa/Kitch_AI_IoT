@@ -1,5 +1,6 @@
 # Import the models so SQLAlchemy registers every table in Base.metadata.
 from app.models.base import Base
+from app.models.auth_identity import AuthIdentity
 from app.models.category import Category
 from app.models.ingredient import Ingredient
 from app.models.ingredient_category import IngredientCategory
@@ -12,6 +13,7 @@ from app.models.unit_conversion import UnitConversion
 from app.models.user import User
 
 __all__ = [
+    "AuthIdentity",
     "Base",
     "Category",
     "Ingredient",

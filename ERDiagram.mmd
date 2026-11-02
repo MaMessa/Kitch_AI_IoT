@@ -3,7 +3,7 @@ id: 8845a8e7-4e09-4ff8-9509-feb9d3d4378c
 title: KitchAI
 config:
   layout: elk
-  theme: neo-dark
+  theme: mc
   themeVariables:
     primaryColor: "#d6d922"
     primaryTextColor: "#000000"
@@ -16,43 +16,82 @@ erDiagram
     %% 1. UTILISATEURS, FOYERS & RÔLES
     %% ================================================
 
-    User { 
-        BIGINT id PK
-        VARCHAR email "UNIQUE, NOT NULL"
-        VARCHAR password_hash "NOT NULL"
-        VARCHAR first_name "NOT NULL"
-        VARCHAR last_name
-        TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
-        TIMESTAMP updated_at
+    User {
+        BIGINT      id PK
+        VARCHAR     email "UNIQUE, NOT NULL"
+        VARCHAR     password_hash "NULLable (NULL pour connexion sociale)"
+        TIMESTAMP   email_verified_at "NULLable (adresse vérifiée)"
+        BOOLEAN     is_admin "NOT NULL DEFAULT FALSE"
+        VARCHAR     first_name "NOT NULL"
+        VARCHAR     last_name
+        TIMESTAMP   created_at "DEFAULT CURRENT_TIMESTAMP"
+        TIMESTAMP   updated_at
+    }
+
+    Auth_Identity {
+        BIGINT      id PK
+        BIGINT      user_id FK "NOT NULL; UNIQUE with provider"
+        VARCHAR     provider "NOT NULL; google, facebook, apple; UNIQUE with user_id"
+        VARCHAR     provider_user_id "NOT NULL; UNIQUE with provider"
+        TIMESTAMP   created_at "DEFAULT CURRENT_TIMESTAMP"
     }
 
     Household {
-        BIGINT id PK
-        VARCHAR name "NOT NULL"
-        VARCHAR invite_code "UNIQUE, NOT NULL"
-        TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
-        TIMESTAMP updated_at
+        BIGINT      id PK
+        VARCHAR     name "NOT NULL"
+        VARCHAR     invite_code "UNIQUE, NOT NULL"
+        TIMESTAMP   created_at "DEFAULT CURRENT_TIMESTAMP"
+        TIMESTAMP   updated_at
     }
 
     Household_Member {
-        BIGINT id PK
-        BIGINT user_id FK "NOT NULL"
-        BIGINT household_id FK "NOT NULL"
-        VARCHAR role "DEFAULT 'member'"
-        TIMESTAMP joined_at "DEFAULT CURRENT_TIMESTAMP"
+        BIGINT      id PK
+        BIGINT      user_id FK "NOT NULL"
+        BIGINT      household_id FK "NOT NULL"
+        VARCHAR     role "DEFAULT 'member'"
+        TIMESTAMP   joined_at "DEFAULT CURRENT_TIMESTAMP"
     }
 
     Role {
-        INT id PK
-        VARCHAR name "UNIQUE, NOT NULL - Ex: 'admin', 'member'"
-        VARCHAR description "NULLable"
+        INT         id PK
+        VARCHAR     name "UNIQUE, NOT NULL - Ex: 'admin', 'member'"
+        VARCHAR     description "NULLable"
     }
 
     Recipe_Contributor {
-        BIGINT id PK
-        BIGINT recipe_id FK "NOT NULL"
-        BIGINT user_id FK "NOT NULL"
-        BIGINT role_id FK "NOT NULL"
+        BIGINT      id PK
+        BIGINT      recipe_id FK "NOT NULL"
+        BIGINT      user_id FK "NOT NULL"
+        BIGINT      role_id FK "NOT NULL"
+    }
+
+    %% Les totaux quotidiens et la couleur du calendrier sont calculés à partir des entrées et des objectifs en vigueur.
+    Nutrition_Goal {
+        BIGINT      id PK
+        BIGINT      user_id FK "NOT NULL"
+        DATE        valid_from "NOT NULL; début de cette version des objectifs"
+        DATE        valid_until "NULLable; fin de validité"
+        NUMERIC     calories_target_kcal "NULLable; objectif journalier"
+        NUMERIC     proteins_target_g "NULLable; objectif journalier"
+        NUMERIC     carbs_target_g "NULLable; objectif journalier"
+        NUMERIC     fats_target_g "NULLable; objectif journalier"
+        NUMERIC     fiber_target_g "NULLable; objectif journalier"
+        TIMESTAMP   created_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+
+    Nutrition_Log_Entry {
+        BIGINT      id PK
+        BIGINT      user_id FK "NOT NULL; propriétaire du journal"
+        BIGINT      recipe_id FK "NULLable; recette consommée si connue"
+        DATE        consumed_on "NOT NULL; jour local de consommation"
+        VARCHAR     entry_name "NOT NULL; nom conservé pour l'historique"
+        NUMERIC     servings_consumed "NOT NULL DEFAULT 1"
+        NUMERIC     calories_per_serving_kcal "NULLable; instantané au moment du journal"
+        NUMERIC     proteins_per_serving_g "NULLable; instantané au moment du journal"
+        NUMERIC     carbs_per_serving_g "NULLable; instantané au moment du journal"
+        NUMERIC     fats_per_serving_g "NULLable; instantané au moment du journal"
+        NUMERIC     fiber_per_serving_g "NULLable; instantané au moment du journal"
+        TIMESTAMP   created_at "DEFAULT CURRENT_TIMESTAMP"
     }
 
 
@@ -77,48 +116,48 @@ erDiagram
     }
 
     Category {
-        BIGINT id PK
-        VARCHAR name "UNIQUE, NOT NULL - Ex: Entrée, Plat, Dessert"
-        VARCHAR icon_slug
+        BIGINT      id PK
+        VARCHAR     name "UNIQUE, NOT NULL - Ex: Entrée, Plat, Dessert"
+        VARCHAR     icon_slug
     }
 
     Recipe_Category {
-        BIGINT id PK
-        BIGINT recipe_id FK "NOT NULL"
-        BIGINT category_id FK "NOT NULL"
+        BIGINT      id PK
+        BIGINT      recipe_id FK "NOT NULL"
+        BIGINT      category_id FK "NOT NULL"
     }
 
     Diet {
-        BIGINT id PK
-        VARCHAR name "UNIQUE, NOT NULL - Ex: Végétarien, Minceur, Sans Gluten"
-        VARCHAR description
+        BIGINT      id PK
+        VARCHAR     name "UNIQUE, NOT NULL - Ex: Végétarien, Minceur, Sans Gluten"
+        VARCHAR     description
     }
 
     Recipe_Diet {
-        BIGINT id PK
-        BIGINT recipe_id FK "NOT NULL"
-        BIGINT diet_id FK "NOT NULL"
+        BIGINT      id PK
+        BIGINT      recipe_id FK "NOT NULL"
+        BIGINT      diet_id FK "NOT NULL"
     }
 
     Utensil {
-        BIGINT id PK
-        VARCHAR name "UNIQUE, NOT NULL - Ex: Fouet, Moule à cake"
-        VARCHAR icon_slug
+        BIGINT      id PK
+        VARCHAR     name "UNIQUE, NOT NULL - Ex: Fouet, Moule à cake"
+        VARCHAR     icon_slug
     }
 
     Recipe_Utensil {
-        BIGINT id PK
-        BIGINT recipe_id FK "NOT NULL"
-        BIGINT utensil_id FK "NOT NULL"
+        BIGINT      id PK
+        BIGINT      recipe_id FK "NOT NULL"
+        BIGINT      utensil_id FK "NOT NULL"
     }
 
     Recipe_Ingredient {
-        BIGINT id PK
-        BIGINT recipe_id FK "NOT NULL"
-        BIGINT ingredient_id FK "NOT NULL"
-        BIGINT unit_id FK "NOT NULL"
-        NUMERIC quantity "NOT NULL"
-        VARCHAR notes "Ex: 'coupé en dés'"
+        BIGINT      id PK
+        BIGINT      recipe_id FK "NOT NULL"
+        BIGINT      ingredient_id FK "NOT NULL"
+        BIGINT      unit_id FK "NOT NULL"
+        NUMERIC     quantity "NOT NULL"
+        VARCHAR     notes "Ex: 'coupé en dés'"
     }
 
 
@@ -127,56 +166,61 @@ erDiagram
     %% ================================================
 
     Item {
-        BIGINT id PK
-        VARCHAR name "NOT NULL"
-        VARCHAR image_url
-        BIGINT default_unit_id FK "NOT NULL"
-        TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
-        TIMESTAMP updated_at
+        BIGINT      id PK
+        VARCHAR     name "NOT NULL"
+        VARCHAR     image_url
+        BIGINT      default_unit_id FK "NOT NULL"
+        TIMESTAMP   created_at "DEFAULT CURRENT_TIMESTAMP"
+        TIMESTAMP   updated_at
     }
 
     Ingredient {
-        BIGINT item_id PK, FK "Héritage 1-1 (1 Item = 1 Ingredient)"
-        BIGINT ingredient_category_id FK "NOT NULL"
-        NUMERIC calories "Par 100g/ml"
-        NUMERIC proteins "Par 100g/ml"
-        NUMERIC carbs "Par 100g/ml"
-        NUMERIC fats "Par 100g/ml"
-        NUMERIC fiber "Par 100g/ml"
+        BIGINT      item_id PK, FK "Héritage 1-1 (1 Item = 1 Ingredient)"
+        BIGINT      ingredient_category_id FK "NOT NULL"
+        NUMERIC     calories "kcal par 100 g"
+        NUMERIC     proteins "g par 100 g"
+        NUMERIC     carbs "g par 100 g"
+        NUMERIC     fats "g par 100 g"
+        NUMERIC     fiber "g par 100 g"
+        VARCHAR     data_source "NOT NULL DEFAULT manual; ciqual, openfoodfacts, manual"
+        VARCHAR     source_id "Identifiant stable de la source; UNIQUE avec data_source"
+        VARCHAR     source_version "Version du jeu de données"
+        VARCHAR     source_url "URL de provenance et attribution"
+        VARCHAR     brand "Marque du produit, si applicable"
+        VARCHAR     barcode "Code-barres du produit de marque"
     }
 
     Ingredient_Category {
-        BIGINT id PK
-        VARCHAR name "UNIQUE, NOT NULL - Ex: Légumes, Produits laitiers"
-        VARCHAR icon_slug
+        BIGINT      id PK
+        VARCHAR     name "UNIQUE, NOT NULL - Ex: Légumes, Produits laitiers"
+        VARCHAR     icon_slug
     }
 
     Non_Food_Item {
-        BIGINT item_id PK, FK "Héritage 1-1 (1 Item = 1 Non_Food_Item)"
-        BIGINT non_food_item_category_id FK "NOT NULL"
-        VARCHAR usage_notes
+        BIGINT      item_id PK, FK "Héritage 1-1 (1 Item = 1 Non_Food_Item)"
+        BIGINT      non_food_item_category_id FK "NOT NULL"
+        VARCHAR     usage_notes
     }
 
     Non_Food_Item_Category {
-        BIGINT id PK
-        VARCHAR name "UNIQUE, NOT NULL - Ex: Entretien, Hygiène"
-        VARCHAR icon_slug
+        BIGINT      id PK
+        VARCHAR     name "UNIQUE, NOT NULL - Ex: Entretien, Hygiène"
+        VARCHAR     icon_slug
     }
 
     Unit {
-        BIGINT id PK
-        VARCHAR name "UNIQUE, NOT NULL - Ex: Gramme, Litre, Pièce"
-        VARCHAR symbol "UNIQUE, NOT NULL - Ex: g, l, pcs"
-        VARCHAR unit_type "Ex: mass, volume, count"
+        BIGINT      id PK
+        VARCHAR     name "UNIQUE, NOT NULL - Ex: Gramme, Litre, Pièce"
+        VARCHAR     symbol "UNIQUE, NOT NULL - Ex: g, l, pcs"
+        VARCHAR     unit_type "Ex: mass, volume, count"
     }
 
     Unit_Conversion {
-        BIGINT id PK
-        BIGINT from_unit_id FK "NOT NULL"
-        BIGINT to_unit_id FK "NOT NULL"
-        BIGINT item_id FK "NULLable (NULL = conversion générique)"
-        NUMERIC factor "NOT NULL - Ex: 15.0000"
-        TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
+        BIGINT      id PK
+        BIGINT      from_unit_id FK "NOT NULL"
+        BIGINT      to_unit_id FK "NOT NULL"
+        NUMERIC     factor "NOT NULL - multiplicateur from_unit vers to_unit, générique"
+        TIMESTAMP   created_at "DEFAULT CURRENT_TIMESTAMP"
     }
 
 
@@ -185,62 +229,62 @@ erDiagram
     %% ================================================
 
     Meal_Plan {
-        BIGINT id PK
-        BIGINT household_id FK "NOT NULL"
-        DATE start_date "NOT NULL"
-        DATE end_date "NOT NULL"
-        TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
+        BIGINT      id PK
+        BIGINT      household_id FK "NOT NULL"
+        DATE        start_date "NOT NULL"
+        DATE        end_date "NOT NULL"
+        TIMESTAMP   created_at "DEFAULT CURRENT_TIMESTAMP"
     }
 
     Meal_Plan_Item {
-        BIGINT id PK
-        BIGINT meal_plan_id FK "NOT NULL"
-        BIGINT recipe_id FK "NULLable"
-        BIGINT item_id FK "NULLable"
-        BIGINT unit_id FK "NULLable"
-        NUMERIC quantity "NULLable"
-        DATE meal_date "NOT NULL"
-        VARCHAR meal_type "NOT NULL"
-        INTEGER servings "DEFAULT 1"
+        BIGINT      id PK
+        BIGINT      meal_plan_id FK "NOT NULL"
+        BIGINT      recipe_id FK "NULLable"
+        BIGINT      item_id FK "NULLable"
+        BIGINT      unit_id FK "NULLable"
+        NUMERIC     quantity "NULLable"
+        DATE        meal_date "NOT NULL"
+        VARCHAR     meal_type "NOT NULL"
+        INTEGER     servings "DEFAULT 1"
     }
 
     Grocery_List {
-        BIGINT id PK
-        BIGINT household_id FK "NOT NULL"
-        VARCHAR name "NOT NULL DEFAULT 'Liste principale'"
-        BOOLEAN is_archived "DEFAULT FALSE"
-        TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
-        TIMESTAMP updated_at
+        BIGINT      id PK
+        BIGINT      household_id FK "NOT NULL"
+        VARCHAR     name "NOT NULL DEFAULT 'Liste principale'"
+        BOOLEAN     is_archived "DEFAULT FALSE"
+        TIMESTAMP   created_at "DEFAULT CURRENT_TIMESTAMP"
+        TIMESTAMP   updated_at
     }
 
     Grocery_List_Items {
-        BIGINT id PK
-        BIGINT grocery_list_id FK "NOT NULL"
-        BIGINT item_id FK "NOT NULL"
-        BIGINT unit_id FK "NOT NULL"
-        NUMERIC quantity "NOT NULL DEFAULT 1"
-        BOOLEAN is_bought "DEFAULT FALSE"
-        BIGINT added_by_user_id FK "NULLable"
-        TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
+        BIGINT      id PK
+        BIGINT      grocery_list_id FK "NOT NULL"
+        BIGINT      item_id FK "NOT NULL"
+        BIGINT      unit_id FK "NOT NULL"
+        NUMERIC     quantity "NOT NULL DEFAULT 1"
+        BOOLEAN     is_bought "DEFAULT FALSE"
+        BIGINT      added_by_user_id FK "NULLable"
+        TIMESTAMP   created_at "DEFAULT CURRENT_TIMESTAMP"
     }
 
     Stock {
-        BIGINT id PK
-        BIGINT household_id FK "NOT NULL"
-        VARCHAR name "DEFAULT 'Stock principal'"
-        TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
-        TIMESTAMP updated_at
+        BIGINT      id PK
+        BIGINT      household_id FK "NOT NULL"
+        VARCHAR     name "DEFAULT 'Stock principal'"
+        TIMESTAMP   created_at "DEFAULT CURRENT_TIMESTAMP"
+        TIMESTAMP   updated_at
     }
 
     Stock_Item {
-        BIGINT id PK
-        BIGINT stock_id FK "NOT NULL"
-        BIGINT item_id FK "NOT NULL"
-        BIGINT unit_id FK "NOT NULL"
-        NUMERIC quantity "NOT NULL DEFAULT 0"
-        DATE expiration_date "NULLable"
-        TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
-        TIMESTAMP updated_at
+        BIGINT      id PK
+        BIGINT      stock_id FK "NOT NULL"
+        BIGINT      item_id FK "NOT NULL"
+        BIGINT      unit_id FK "NOT NULL"
+        NUMERIC     quantity "NOT NULL DEFAULT 0"
+        DATE        expiration_date "NULLable"
+        TIMESTAMP   created_at "DEFAULT CURRENT_TIMESTAMP"
+        TIMESTAMP   updated_at
     }
 
 
@@ -249,27 +293,27 @@ erDiagram
     %% ================================================
 
     Yolo_Class {
-        BIGINT id PK
-        VARCHAR name "UNIQUE, NOT NULL - Ex: 'apple', 'bottle'"
-        VARCHAR label_fr "Ex: 'Pomme', 'Bouteille'"
+        BIGINT      id PK
+        VARCHAR     name "UNIQUE, NOT NULL - Ex: 'apple', 'bottle'"
+        VARCHAR     label_fr "Ex: 'Pomme', 'Bouteille'"
     }
 
     Scan_Log {
-        BIGINT id PK
-        BIGINT user_id FK "NOT NULL"
-        BIGINT household_id FK "NOT NULL"
-        VARCHAR image_url
-        TIMESTAMP scanned_at "DEFAULT CURRENT_TIMESTAMP"
+        BIGINT      id PK
+        BIGINT      user_id FK "NOT NULL"
+        BIGINT      household_id FK "NOT NULL"
+        VARCHAR     image_url
+        TIMESTAMP   scanned_at "DEFAULT CURRENT_TIMESTAMP"
     }
 
     Scan_detection {
-        BIGINT id PK
-        BIGINT scan_log_id FK "NOT NULL"
-        BIGINT yolo_class_id FK "NOT NULL"
-        BIGINT item_id FK "NULLable (après validation/matching)"
-        NUMERIC confidence "Ex: 0.950"
-        VARCHAR bounding_box "Ex: '[x, y, w, h]'"
-        TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
+        BIGINT      id PK
+        BIGINT      scan_log_id FK "NOT NULL"
+        BIGINT      yolo_class_id FK "NOT NULL"
+        BIGINT      item_id FK "NULLable (après validation/matching)"
+        NUMERIC     confidence "Ex: 0.950"
+        VARCHAR     bounding_box "Ex: '[x, y, w, h]'"
+        TIMESTAMP   created_at "DEFAULT CURRENT_TIMESTAMP"
     }
 
 
@@ -279,6 +323,8 @@ erDiagram
 
     %% 1. Utilisateurs & Foyers
     User ||--|{ Household_Member : "fait partie de" 
+
+    User ||--o{ Auth_Identity : "possède ses identifiants externes"
     Household ||--|{ Household_Member : "contient"  
 
     %% 2. Contributions & Rôles
@@ -286,6 +332,9 @@ erDiagram
     User ||--o{ Recipe_Contributor : "peut être / contribue"    
     Role ||--o{ Recipe_Contributor : "définit le rôle de"       
     Recipe ||--o{ Recipe_Contributor : "a pour contributeurs"   
+    User ||--o{ Nutrition_Goal : "définit ses objectifs datés"
+    User ||--o{ Nutrition_Log_Entry : "consigne ses repas consommés"
+    Recipe |o--o{ Nutrition_Log_Entry : "peut être enregistrée comme consommée"
 
     %% 3. Recettes & Intermédiaires (Placées entre Recipe et les tables cibles)
     Recipe ||--o{ Recipe_Category : "classifie"                 
@@ -328,8 +377,6 @@ erDiagram
     
     Unit ||--o{ Unit_Conversion : "unité source (from)"
     Unit ||--o{ Unit_Conversion : "unité cible (to)"
-    Item |o--o{ Unit_Conversion : "spécifie la densité/conversion pour"
-
     %% 8. Vision & YOLO
     User ||--o{ Scan_Log : "effectue"
     Household ||--o{ Scan_Log : "enregistre"

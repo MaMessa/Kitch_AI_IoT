@@ -14,6 +14,8 @@ erDiagram
 
     User {
     }
+    Auth_Identity {
+    }
     Household {
     }
     Household_Member {
@@ -21,6 +23,10 @@ erDiagram
     Role {
     }
     Recipe_Contributor {
+    }
+    Nutrition_Goal {
+    }
+    Nutrition_Log_Entry {
     }
     Recipe {
     }
@@ -71,10 +77,14 @@ erDiagram
     Recipe_Utensil {
     }
 
-    User ||--|{ Household_Member : "fait partie de" 
+    User ||--|{ Household_Member : "fait partie de" 
+    User ||--o{ Auth_Identity : "possède ses identifiants externes"
     Household ||--|{ Household_Member : "contient"  
 
     User ||--o{ Recipe : "crée"                                           
+    User ||--o{ Nutrition_Goal : "définit ses objectifs datés"
+    User ||--o{ Nutrition_Log_Entry : "consigne ses repas consommés"
+    Recipe |o--o{ Nutrition_Log_Entry : "peut être enregistrée comme consommée"
     User ||--o{ Recipe_Contributor : "peut être / contribue"    
     Role ||--o{ Recipe_Contributor : "définit le rôle de"      
     Recipe ||--o{ Recipe_Contributor : "a pour contributeurs"   
@@ -114,7 +124,6 @@ erDiagram
     
     Unit ||--o{ Unit_Conversion : "unité source (from)"
     Unit ||--o{ Unit_Conversion : "unité cible (to)"
-    Item |o--o{ Unit_Conversion : "spécifie la densité/conversion pour"
 
     User ||--o{ Scan_Log : "effectue"
     Household ||--o{ Scan_Log : "enregistre"
