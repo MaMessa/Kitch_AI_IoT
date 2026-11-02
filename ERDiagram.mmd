@@ -3,14 +3,13 @@ id: 8845a8e7-4e09-4ff8-9509-feb9d3d4378c
 title: KitchAI
 config:
   layout: elk
-  theme: base
+  theme: neo-dark
   themeVariables:
     primaryColor: "#d6d922"
     primaryTextColor: "#000000"
     lineColor: "#000000"
     background: "#f0f0f0"
 ---
-
 erDiagram
 
     %% ================================================
@@ -62,19 +61,19 @@ erDiagram
     %% ================================================
 
     Recipe {
-        BIGINT id PK
-        BIGINT author_id FK "NOT NULL (User)"
-        BIGINT household_id FK "NULLable (NULL = publique)"
-        VARCHAR title "NOT NULL"
-        TEXT description
-        INTEGER prep_time_min
-        INTEGER cook_time_min
-        INTEGER servings "DEFAULT 4"
-        TEXT instructions "NOT NULL"
-        VARCHAR image_url
-        BOOLEAN is_public "DEFAULT TRUE"
-        TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
-        TIMESTAMP updated_at  
+        BIGINT      id PK
+        BIGINT      author_id FK "NOT NULL (User)"
+        BIGINT      household_id FK "NULLable (NULL = publique)"
+        VARCHAR     title "NOT NULL"
+        TEXT        description
+        INTEGER     prep_time_min
+        INTEGER     cook_time_min
+        INTEGER     servings "DEFAULT 4"
+        TEXT        instructions "NOT NULL"
+        VARCHAR     image_url
+        BOOLEAN     is_public "DEFAULT TRUE"
+        TIMESTAMP   created_at "DEFAULT CURRENT_TIMESTAMP"
+        TIMESTAMP   updated_at  
     }
 
     Category {

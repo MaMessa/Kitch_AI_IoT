@@ -28,7 +28,7 @@ erDiagram
     }
     Category {
     }
-    Recipe_Item {
+    Recipe_Ingredient {
     }
     Recipe_Diet {
     }
@@ -82,8 +82,8 @@ erDiagram
     Category ||--o{ Recipe_Category : "classifie"               
     Recipe ||--o{ Recipe_Category : "classifie"                 
 
-    Recipe ||--o{ Recipe_Item : "contient"                      
-    Ingredient ||--o{ Recipe_Item : "est utilisé dans"          
+    Recipe ||--o{ Recipe_Ingredient : "contient"                      
+    Ingredient ||--o{ Recipe_Ingredient : "est utilisé dans"          
     Ingredient_Category ||--o{ Ingredient : "catégorise"        
     Recipe ||--o{ Recipe_Diet : "respecte"                      
     Diet ||--o{ Recipe_Diet : "qualifie"                        
@@ -105,7 +105,7 @@ erDiagram
     Non_Food_Item_Category ||--o{ Non_Food_Item : "catégorise"  
 
     Unit ||--o{ Item : "définit l'unité par défaut de"
-    Unit ||--o{ Recipe_Item : "mesure la quantité dans"
+    Unit ||--o{ Recipe_Ingredient : "mesure la quantité dans"
     Unit ||--o{ Stock_Item : "mesure la quantité en"
     Unit ||--o{ Grocery_List_Items : "mesure la quantité à acheter pour"
     
