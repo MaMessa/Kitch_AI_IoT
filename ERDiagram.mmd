@@ -36,6 +36,25 @@ erDiagram
         TIMESTAMP   created_at "DEFAULT CURRENT_TIMESTAMP"
     }
 
+    User_Session {
+        BIGINT      id PK
+        BIGINT      user_id FK "NOT NULL; cascade delete"
+        VARCHAR     token_hash "UNIQUE, NOT NULL; SHA-256 du cookie"
+        TIMESTAMP   created_at "NOT NULL DEFAULT CURRENT_TIMESTAMP"
+        TIMESTAMP   expires_at "NOT NULL"
+        TIMESTAMP   revoked_at "NULLable; NULL signifie non révoquée"
+    }
+
+    Email_Action_Token {
+        BIGINT      id PK
+        BIGINT      user_id FK "NOT NULL; cascade delete"
+        VARCHAR     purpose "NOT NULL; verify_email ou reset_password"
+        VARCHAR     token_hash "UNIQUE, NOT NULL; SHA-256 du jeton à usage unique"
+        TIMESTAMP   created_at "NOT NULL DEFAULT CURRENT_TIMESTAMP"
+        TIMESTAMP   expires_at "NOT NULL"
+        TIMESTAMP   consumed_at "NULLable; NULL signifie encore utilisable"
+    }
+
     Household {
         BIGINT      id PK
         VARCHAR     name "NOT NULL"
@@ -65,7 +84,8 @@ erDiagram
         BIGINT      role_id FK "NOT NULL"
     }
 
-    %% Les totaux quotidiens et la couleur du calendrier sont calculés à partir des entrées et des objectifs en vigueur.
+    %% Suivi nutritionnel quotidien prévu après la V1.
+    %% Les totaux quotidiens et la couleur du calendrier seront calculés, pas stockés.
     Nutrition_Goal {
         BIGINT      id PK
         BIGINT      user_id FK "NOT NULL"
@@ -108,11 +128,17 @@ erDiagram
         INTEGER     prep_time_min
         INTEGER     cook_time_min
         INTEGER     servings "DEFAULT 4"
-        TEXT        instructions "NOT NULL"
         VARCHAR     image_url
-        BOOLEAN     is_public "DEFAULT TRUE"
+        BOOLEAN     is_public "DEFAULT FALSE; privé jusqu'à publication"
         TIMESTAMP   created_at "DEFAULT CURRENT_TIMESTAMP"
         TIMESTAMP   updated_at  
+    }
+
+    Recipe_Step {
+        BIGINT      id PK
+        BIGINT      recipe_id FK "NOT NULL; CASCADE ON DELETE"
+        INTEGER     step_number "NOT NULL; UNIQUE par recette; > 0"
+        TEXT        instruction "NOT NULL"
     }
 
     Category {
@@ -325,6 +351,8 @@ erDiagram
     User ||--|{ Household_Member : "fait partie de" 
 
     User ||--o{ Auth_Identity : "possède ses identifiants externes"
+    User ||--o{ User_Session : "ouvre et révoque des sessions navigateur"
+    User ||--o{ Email_Action_Token : "reçoit des liens temporaires de vérification ou récupération"
     Household ||--|{ Household_Member : "contient"  
 
     %% 2. Contributions & Rôles
@@ -332,6 +360,7 @@ erDiagram
     User ||--o{ Recipe_Contributor : "peut être / contribue"    
     Role ||--o{ Recipe_Contributor : "définit le rôle de"       
     Recipe ||--o{ Recipe_Contributor : "a pour contributeurs"   
+    Recipe ||--o{ Recipe_Step : "contient dans l'ordre"
     User ||--o{ Nutrition_Goal : "définit ses objectifs datés"
     User ||--o{ Nutrition_Log_Entry : "consigne ses repas consommés"
     Recipe |o--o{ Nutrition_Log_Entry : "peut être enregistrée comme consommée"

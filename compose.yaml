@@ -1,5 +1,12 @@
 
 services:
+  mailpit:  # Capture development emails locally without sending them to real recipients.
+    image: axllent/mailpit:latest  # Use the official Mailpit container image.
+    container_name: kitchai-mailpit  # Give the local email catcher a predictable name.
+    ports:  # Publish both services only on this computer.
+      - "127.0.0.1:1025:1025"  # Accept SMTP from the local FastAPI process.
+      - "127.0.0.1:8025:8025"  # Open the local inbox in a browser.
+
   db:                              # Service name used by Docker Compose
     image: postgres:17             # Use PostgreSQL version 17
     container_name: kitchai-db     # Assign a fixed name to the container

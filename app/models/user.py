@@ -24,3 +24,7 @@ class User(Base):  # Define the ORM class for the user table.
 
     recipes: Mapped[list["Recipe"]] = relationship(back_populates="author")  # Expose recipes written by this user.
     auth_identities: Mapped[list["AuthIdentity"]] = relationship(back_populates="user")  # Expose linked Google, Facebook, or Apple identities.
+    sessions: Mapped[list["UserSession"]] = relationship(back_populates="user", cascade="all, delete-orphan")  # Keep revocable login sessions attached to their account.
+    email_action_tokens: Mapped[list["EmailActionToken"]] = relationship(back_populates="user", cascade="all, delete-orphan")  # Keep verification and recovery tokens attached to their account.
+    personal_ingredients: Mapped[list["Ingredient"]] = relationship(back_populates="owner_user")  # Expose ingredients owned privately by this account.
+

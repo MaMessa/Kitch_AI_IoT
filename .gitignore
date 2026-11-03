@@ -5,4 +5,4 @@ Note.md
 __pycache__/
 
 # Ignore local database files and all subdirectories
-/Project_note/
+/.Project_note/

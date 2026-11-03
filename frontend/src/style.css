@@ -151,3 +151,129 @@ h3 { margin-bottom: 5px; font-family: 'Poppins', 'Arial', sans-serif; font-size:
 .tag-blue, .stripe-blue { background: #67b7ff; } /* Marks main dishes in blue. */
 /* Softens interface edges slightly without using large pill-shaped corners. */
 .recipe-card, .hero-search, .filter-button, .chip, .nav-item.active, .card-open, .category-tag, .primary-button, .notice, .modal-close, .avatar, .brand-mark { border-radius: 5px; } /* Applies a restrained corner radius across key controls and cards. */
+
+/* Provides clear entry points to login and account creation. */
+.account-links { display: flex; align-items: center; gap: 10px; } /* Keeps account actions together in the header. */
+.account-links a { padding: 9px 11px; border: 1px solid var(--line); color: var(--text); font-size: 11px; text-decoration: none; } /* Styles the quiet sign-in link. */
+.account-links a:last-child { border-color: var(--lime); background: var(--lime); color: #1d231b; font-weight: 800; } /* Makes account creation the primary action. */
+
+/* Builds a focused, responsive account experience using the existing KitchAI palette. */
+.auth-shell { min-height: 100vh; display: grid; place-items: center; padding: 24px; background: var(--bg); } /* Centers forms on the matte blue canvas. */
+.auth-card { width: min(460px, 100%); padding: 34px; border: 1px solid var(--line); background: var(--panel); box-shadow: 8px 8px 0 #0e121a; } /* Gives the account form a crisp premium frame. */
+.auth-brand { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 32px; color: var(--text); font-size: 21px; font-weight: 850; letter-spacing: -1px; text-decoration: none; } /* Reuses the KitchAI wordmark. */
+.auth-eyebrow { margin-bottom: 9px; color: var(--lime); font-size: 10px; font-weight: 800; letter-spacing: 1.7px; } /* Marks the start of the account content. */
+.auth-card h1 { margin-bottom: 10px; font-size: clamp(30px, 8vw, 40px); letter-spacing: -1.7px; } /* Scales the heading for mobile screens. */
+.auth-intro { margin-bottom: 24px; color: var(--muted); font-size: 13px; line-height: 1.65; } /* Keeps guidance readable and calm. */
+.auth-form { display: grid; gap: 16px; } /* Separates form fields consistently. */
+.auth-form label { display: grid; gap: 7px; color: var(--text); font-size: 11px; font-weight: 700; } /* Gives each input a clear label. */
+.auth-form input { width: 100%; min-height: 44px; padding: 0 12px; border: 1px solid #536075; border-radius: 5px; outline: none; background: #151c28; color: var(--text); font-size: 13px; } /* Uses the dark blue form surface and visible outline. */
+.auth-form input:focus { border-color: var(--lime); box-shadow: 0 0 0 2px #c7fa4b33; } /* Shows keyboard focus clearly. */
+.auth-form small { color: var(--muted); font-size: 10px; font-weight: 400; } /* Explains the minimum password length. */
+.auth-submit { width: 100%; min-height: 46px; margin-top: 4px; border: 1px solid var(--lime); border-radius: 5px; background: var(--lime); color: #1d231b; font-size: 12px; font-weight: 850; } /* Highlights the form's main action. */
+.auth-submit:disabled, .auth-secondary:disabled { cursor: wait; opacity: .65; } /* Indicates that the request is processing. */
+.auth-secondary { width: 100%; min-height: 42px; margin-top: 8px; border: 1px solid var(--line); border-radius: 5px; background: transparent; color: var(--text); font-size: 11px; } /* Styles the verification resend action. */
+.auth-error, .auth-success { margin: 0 0 14px; padding: 11px 12px; border: 1px solid; font-size: 12px; line-height: 1.5; } /* Gives feedback consistent visual weight. */
+.auth-error { border-color: #ff6d72; background: #40272d; color: #ffd9d9; } /* Marks an action that needs attention. */
+.auth-success { border-color: #a9d946; background: #293821; color: #d7ff91; } /* Confirms completed account actions. */
+.auth-footnote { margin: 20px 0 0; color: var(--muted); font-size: 11px; line-height: 2; } /* Groups the related navigation links. */
+.auth-footnote a { color: var(--lime); font-weight: 700; text-decoration: none; } /* Makes related account actions easy to find. */
+@media (max-width: 700px) { .account-links { gap: 6px; } .account-links a { padding: 7px 8px; font-size: 9px; } .auth-shell { padding: 16px; } .auth-card { padding: 25px 21px; } } /* Keeps forms and header links comfortable on phones. */
+
+.brand-button { padding: 0; border: 0; background: transparent; text-align: left; } /* Keep the wordmark as a home button. */
+.top-account { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 10px; } /* Show the current account without crowding the header. */
+.icon-button { display: inline-grid; place-items: center; padding: 7px; border: 1px solid var(--line); background: transparent; color: var(--muted); } /* Give small actions a clear hit target. */
+.icon-button:hover { border-color: var(--lime); color: var(--lime); } /* Highlight the focused action. */
+.icon-button.danger, .danger-text { color: var(--coral); } /* Mark destructive actions in coral. */
+.notice-error { border-color: var(--coral); background: #3d252b; color: #ffd6d8; } /* Distinguish error notices from success feedback. */
+.notice-error button { border: 0; background: transparent; color: inherit; } /* Keep error dismissal visible. */
+.data-page { padding: 36px 0 80px; } /* Space management screens below the header. */
+.data-heading { display: flex; justify-content: space-between; align-items: end; gap: 18px; margin: 22px 0 28px; } /* Align each page title with its primary action. */
+.data-heading h1 { margin-bottom: 10px; font-size: clamp(34px, 5vw, 54px); } /* Scale management titles for responsive screens. */
+.data-heading .eyebrow { margin-bottom: 8px; } /* Keep overlines close to their heading. */
+.data-search { display: flex; align-items: center; gap: 10px; margin: 0 0 20px; padding: 10px 13px; border: 1px solid var(--line); background: var(--panel); color: var(--lime); } /* Provide an accessible catalogue search field. */
+.data-search input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--text); } /* Let the search use the available width. */
+.data-form { display: grid; gap: 16px; margin: 18px 0 26px; padding: 22px; border: 1px solid var(--line); background: var(--panel); } /* Group form controls on a raised surface. */
+.data-form h2 { margin: 0; font-size: 19px; } /* Keep form headings distinct. */
+.data-form label { display: grid; gap: 7px; color: var(--text); font-size: 11px; font-weight: 700; } /* Keep every input connected to a clear label. */
+.data-form input, .data-form select, .data-form textarea, .data-input { width: 100%; min-height: 42px; padding: 9px 11px; border: 1px solid #536075; border-radius: 5px; outline: none; background: #151c28; color: var(--text); font: inherit; font-size: 12px; } /* Apply the dark blue input treatment consistently. */
+.data-form textarea { resize: vertical; line-height: 1.55; } /* Allow longer text without breaking layout. */
+.data-form input:focus, .data-form select:focus, .data-form textarea:focus, .data-input:focus { border-color: var(--lime); box-shadow: 0 0 0 2px #c7fa4b33; } /* Show keyboard focus clearly. */
+.data-form fieldset { display: grid; gap: 10px; border: 1px solid var(--line); } /* Group recipe category choices. */
+.data-form legend { padding: 0 6px; color: var(--muted); font-size: 11px; } /* Label the category group. */
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; } /* Arrange form fields in a readable two-column grid. */
+.form-grid label { min-width: 0; } /* Prevent long fields from stretching the grid. */
+.primary-button.compact { display: inline-flex; width: auto; min-height: 42px; padding: 0 15px; } /* Fit actions to their label. */
+.auth-secondary { display: inline-flex; justify-content: center; align-items: center; gap: 7px; min-height: 40px; padding: 0 12px; border: 1px solid var(--line); border-radius: 5px; background: transparent; color: var(--text); font-size: 11px; } /* Style secondary actions consistently. */
+.auth-secondary:hover { border-color: var(--lime); color: var(--lime); } /* Show hover and keyboard affordance. */
+.form-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 12px; } /* Group save, publish, and cancel actions. */
+.muted-copy { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; } /* Keep helper text readable but quiet. */
+.admin-mark { display: inline-flex; align-items: center; gap: 7px; padding: 9px 11px; border: 1px solid var(--lime); color: var(--lime); font-size: 10px; font-weight: 800; } /* Clearly mark the protected admin area. */
+.admin-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; } /* Organize reference settings into manageable panels. */
+.admin-grid .data-form { margin: 0; } /* Keep admin panels aligned. */
+.admin-list { display: grid; gap: 5px; max-height: 190px; overflow: auto; } /* Keep long catalogues inside their panel. */
+.admin-list button, .admin-list span { display: flex; justify-content: space-between; align-items: center; padding: 8px 9px; border: 1px solid var(--line); background: #182130; color: var(--text); text-align: left; font-size: 11px; } /* Make saved reference values easy to scan. */
+.admin-list button:hover { border-color: var(--lime); } /* Reveal which category or unit can be renamed. */
+.ingredient-list { display: grid; gap: 8px; } /* Stack ingredient rows with clear separation. */
+.ingredient-row { display: flex; align-items: center; gap: 12px; padding: 13px; border: 1px solid var(--line); background: var(--panel); } /* Show each shared or personal food item as a row. */
+.ingredient-avatar { width: 38px; height: 38px; display: grid; place-items: center; background: #2b3545; color: var(--lime); } /* Mark ingredients with a consistent icon tile. */
+.ingredient-copy { display: grid; flex: 1; gap: 4px; min-width: 0; } /* Give the ingredient name the flexible column. */
+.ingredient-copy strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; } /* Keep long names on one readable line. */
+.ingredient-copy small, .nutrition-mini { color: var(--muted); font-size: 10px; } /* Subdue metadata below the name. */
+.nutrition-mini { display: grid; gap: 4px; min-width: 90px; } /* Align compact nutrition facts. */
+.row-actions { display: flex; gap: 5px; } /* Keep owner actions grouped at the row edge. */
+.checkbox-list { display: flex; flex-wrap: wrap; gap: 8px; } /* Lay category checkboxes out as chips. */
+.checkbox-list label { display: flex; grid-auto-flow: column; align-items: center; gap: 7px; padding: 6px 9px; border: 1px solid var(--line); font-weight: 500; } /* Keep category labels compact. */
+.checkbox-list input { width: auto; min-height: auto; accent-color: var(--lime); } /* Preserve native accessible checkbox behavior. */
+.ingredient-editor-row { display: grid; grid-template-columns: minmax(0, 1fr) 110px 110px 36px; gap: 8px; align-items: center; } /* Keep ingredient, amount, unit, and remove controls together. */
+.recipe-editor { max-width: 920px; } /* Keep the long recipe form readable. */
+.recipe-detail { display: grid; grid-template-columns: minmax(250px, .8fr) minmax(0, 1.2fr); border: 1px solid var(--line); background: var(--panel); } /* Present recipe cover beside its details. */
+.detail-cover { min-height: 350px; background-color: #303b4b; background-position: center; background-size: cover; } /* Reserve a strong cover region when no photo exists. */
+.detail-body { min-width: 0; padding: 28px; } /* Give the recipe content room to breathe. */
+.detail-body h1 { margin: 6px 0 12px; font-size: clamp(30px, 4vw, 48px); } /* Scale recipe titles. */
+.detail-metrics { display: flex; gap: 18px; margin: 18px 0; color: var(--muted); font-size: 11px; } /* Show time and serving details. */
+.detail-metrics span { display: inline-flex; align-items: center; gap: 6px; } /* Align detail icons. */
+.nutrition-card { margin: 18px 0; padding: 16px; border: 1px solid var(--line); background: #182130; } /* Separate per-serving nutrition from instructions. */
+.nutrition-card h2 { margin-bottom: 12px; font-size: 16px; } /* Keep nutrition labels readable. */
+.nutrition-card p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; } /* Explain incomplete calculations. */
+.nutrition-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; } /* Align calories and macronutrients. */
+.nutrition-grid span { display: grid; gap: 3px; color: var(--lime); font-size: 15px; font-weight: 800; } /* Highlight nutrition values. */
+.nutrition-grid small { color: var(--muted); font-size: 9px; font-weight: 500; } /* Label each nutrition value. */
+.detail-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin: 24px 0; } /* Separate ingredients from instructions. */
+.detail-columns h2 { margin-bottom: 12px; font-size: 19px; } /* Label recipe sections. */
+.detail-list { display: grid; gap: 8px; margin: 0; padding-left: 20px; color: var(--text); font-size: 12px; line-height: 1.6; } /* Keep recipe contents easy to scan. */
+.steps-list li::marker { color: var(--mango); font-weight: 800; } /* Give each cooking step a visible ordinal. */
+.back-button { display: inline-flex; align-items: center; gap: 7px; border: 0; background: transparent; color: var(--muted); font-size: 11px; } /* Provide an obvious return path. */
+.empty-state { display: grid; justify-items: center; gap: 10px; margin: 28px 0; padding: 48px 22px; border: 1px dashed var(--line); color: var(--muted); text-align: center; } /* Explain empty catalogue states. */
+.empty-state h2 { color: var(--text); font-size: 20px; } /* Make the empty title easy to find. */
+.empty-state p { max-width: 420px; margin: 0; font-size: 12px; line-height: 1.6; } /* Keep the explanation concise. */
+.empty-state a { text-decoration: none; } /* Style the sign-in action as a button. */
+.device-preview { max-width: 560px; margin: 0 auto 22px; padding: 14px; border: 1px solid #627089; background: #101722; box-shadow: 10px 10px 0 #0d1119; } /* Frame the screen preview like a small device. */
+.device-top { display: flex; justify-content: space-between; padding: 7px 4px 13px; color: var(--muted); font-size: 9px; font-weight: 800; letter-spacing: 1px; } /* Label the display preview. */
+.device-screen { min-height: 260px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 12px; padding: 26px; border: 1px solid var(--line); background: #1c2635; } /* Give recipe content a legible simulated screen. */
+.device-screen h2 { font-size: 23px; } /* Size the recipe title for device viewing. */
+.device-screen p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; } /* Keep instructions readable. */
+.device-controls { display: flex; gap: 8px; } /* Group previous and next step controls. */
+.device-recipe-list { display: grid; gap: 5px; max-width: 560px; margin: auto; } /* Provide recipe choices for the preview. */
+.device-recipe-list button { justify-content: space-between; } /* Align recipe title and send icon. */
+.sidebar-auth { display: grid; grid-template-columns: 1fr; } /* Stack account links in the narrow sidebar. */
+.sidebar-auth a { text-align: center; text-decoration: none; } /* Keep sidebar sign-in links compact. */
+@media (max-width: 900px) { .admin-grid { grid-template-columns: 1fr; } .recipe-detail { grid-template-columns: 1fr; } .detail-cover { min-height: 230px; } } /* Stack management panels and recipe details on tablets. */
+@media (max-width: 700px) { .data-page { padding: 20px 0 92px; } .data-heading { align-items: flex-start; flex-direction: column; } .form-grid, .detail-columns { grid-template-columns: 1fr; } .data-form { padding: 16px; } .ingredient-row { flex-wrap: wrap; } .nutrition-mini { min-width: 75px; } .row-actions { margin-left: auto; } .ingredient-editor-row { grid-template-columns: minmax(0, 1fr) 80px 75px 32px; gap: 5px; } .detail-body { padding: 20px; } .nutrition-grid { grid-template-columns: repeat(2, 1fr); } .top-account { display: none; } .device-screen { min-height: 220px; padding: 18px; } } /* Keep every form usable at phone widths. */
+.admin-row { display: flex; align-items: center; gap: 5px; } /* Keep each reference label and its delete control together. */
+.admin-row > .admin-row-edit { flex: 1; min-width: 0; } /* Give rename controls the available row width. */
+.admin-row > .icon-button { flex: 0 0 auto; } /* Keep the delete target compact. */
+/* Group the public search criteria inside a compact collapsible panel. */
+.discover-filters { display: grid; grid-template-columns: minmax(180px, 1.5fr) minmax(150px, 1fr) minmax(140px, 1fr) auto; gap: 12px; align-items: end; margin: 14px 0 24px; padding: 17px; border: 1px solid var(--line); background: var(--panel); } /* Keep all filters together when opened. */
+.discover-filters label { display: grid; gap: 7px; color: var(--text); font-size: 11px; font-weight: 700; } /* Identify each search criterion clearly. */
+.discover-filters input, .discover-filters select { width: 100%; min-height: 42px; padding: 9px 11px; border: 1px solid #536075; border-radius: 5px; background: #151c28; color: var(--text); font: inherit; } /* Match the application's dark input style. */
+.filter-count { display: inline-grid; place-items: center; min-width: 18px; min-height: 18px; padding: 0 4px; background: var(--lime); color: #151a24; font-weight: 800; } /* Show the number of active filters. */
+.shared-ingredient-editor { max-width: 900px; } /* Keep shared ingredient corrections readable. */
+/* Place matching ingredient suggestions directly below their search field. */
+.ingredient-combobox { position: relative; min-width: 0; } /* Anchor the suggestion menu to its input. */
+.ingredient-combobox input { width: 100%; } /* Let the search field fill its recipe grid cell. */
+.ingredient-suggestions { position: absolute; z-index: 10; top: 100%; left: 0; right: 0; max-height: 250px; overflow-y: auto; border: 1px solid var(--lime); background: #182130; box-shadow: 0 8px 22px #0e121a88; } /* Float only matching proposals above nearby form rows. */
+.ingredient-suggestions button { display: block; width: 100%; padding: 10px; border: 0; background: transparent; color: var(--text); text-align: left; font: inherit; font-size: 12px; } /* Make every suggestion an accessible click target. */
+.ingredient-suggestions button:hover, .ingredient-suggestions button.active { background: #2b3545; color: var(--lime); } /* Highlight mouse and keyboard selection. */
+.ingredient-suggestions p { margin: 0; padding: 10px; color: var(--muted); font-size: 11px; } /* Explain when no ingredient matches the search. */
+@media (max-width: 900px) { .discover-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); } } /* Keep the filter menu usable on tablets. */
+@media (max-width: 600px) { .discover-filters { grid-template-columns: 1fr; } } /* Stack search criteria on phones. */
